@@ -9,19 +9,22 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.File;
-
 public class FlappyGhost extends Application {
 
     private Stage stage;
     private Controller controller;
+
+    private int STAGE_WIDTH = 640;
+
+    public int getSTAGE_WIDTH() {
+        return STAGE_WIDTH;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         this.controller = new Controller(this);
         primaryStage.setResizable(false);
-        int STAGE_WIDTH = 640;
 
         // Starting screen
 
@@ -33,7 +36,6 @@ public class FlappyGhost extends Application {
         GraphicsContext context = canvas.getGraphicsContext2D();
 
         // TODO: Animation timer
-            // Fetches the "virtual x" coordinate from the Controller, not to be confused with the x of the canvas
             // Draws two parts of the background seamlessly
             // From a list of coordinates, draws all of the entities
 
@@ -49,17 +51,32 @@ public class FlappyGhost extends Application {
             @Override
             public void handle(long now) {
                 double deltaTime = (now - lastTime) * 1e-9;
+                controller.update(deltaTime);
+
+                int camera = controller.getGhostX();
 
                 // Scrolling background
-                int backgroundOffset = controller.getGhostX() % 640;
+                int backgroundOffset = camera % STAGE_WIDTH;
                 context.drawImage(new Image("./images/bg.png"), 0 - backgroundOffset, 0);
-                context.drawImage(new Image("./images/bg.png"), 640 - backgroundOffset, 0);
+                context.drawImage(new Image("./images/bg.png"), STAGE_WIDTH - backgroundOffset, 0);
+
+                // Drawing entities
+                int[][] entityCoordinates = controller.getEntityCoordinates();
+                for (int i = 0; i < entityCoordinates.length; i++) {
+                    int imageNum = entityCoordinates[i][0];
+                    int x = (entityCoordinates[i][1] - camera) + STAGE_WIDTH / 2;
+                    int y = entityCoordinates[i][2];
+                    int r = entityCoordinates[i][3];
+                    context.drawImage(new Image("./images/entities/" + imageNum + ".png"), x - r, y - r);
+                }
 
                 lastTime = now;
             }
         };
 
         timer.start();
+
+        // Menu bar
 
         // Ending screen
 
@@ -75,9 +92,7 @@ public class FlappyGhost extends Application {
     }
 }
 
-// TODO: Scrolling background
 // TODO: Ghost jumping & physics
-// TODO: Implement obstacles
 // TODO: End game
 // TODO: Implement MVC!
 // TODO: UI
