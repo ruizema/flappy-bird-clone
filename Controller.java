@@ -7,18 +7,20 @@ public class Controller {
 
     private FlappyGhost view;
     private LinkedList<Entity> entities;
+    private Ghost ghost;
     private double spawnTimer;
     private double SPAWN_FREQUENCY = 3;
 
     public Controller(FlappyGhost flappyGhost) {
         this.view = flappyGhost;
         this.spawnTimer = 0;
-        entities = new LinkedList<>();
-        entities.add(new Ghost( view.getSTAGE_WIDTH() / 2, 200));
+        this.entities = new LinkedList<>();
+        this.ghost = new Ghost( view.getSTAGE_WIDTH() / 2, 200);
+        entities.add(ghost);
     }
 
     public int getGhostX() {
-        return entities.get(0).getX();
+        return ghost.getX();
     }
 
     public int[][] getEntityCoordinates() {
@@ -34,24 +36,37 @@ public class Controller {
 
     public void update(double deltaTime) {
         spawnTimer += deltaTime;
+        ghost.update(deltaTime);
 
-        for (int i = 0; i < entities.size(); i++) {
+        for (int i = 1; i < entities.size(); i++) {
+            Obstacle obstacle = (Obstacle) entities.get(i);
+
             // Despawning obstacles
-            if (i != 0 && entities.get(i).getX() < getGhostX() - 0.75 * view.getSTAGE_WIDTH()) {
+            if (obstacle.getX() < getGhostX() - 0.75 * view.getSTAGE_WIDTH()) {
                 entities.remove(i);
                 i--;
                 continue;
             }
 
-            // Updating entities
-            entities.get(i).update(deltaTime);
+            // Updating obstacles
+            obstacle.update(deltaTime);
 
-            // Spawning obstacles
-            if (spawnTimer >= SPAWN_FREQUENCY) {
-                spawn();
-                spawnTimer = 0;
+            // Checking for interactions
+            if (ghost.checkCollision(obstacle)) {
+                System.out.println("collision");
             }
+            ghost.checkPass(obstacle);
         }
+
+        // Spawning obstacles
+        if (spawnTimer >= SPAWN_FREQUENCY) {
+            spawn();
+            spawnTimer = 0;
+        }
+    }
+
+    public void jump() {
+        ghost.jump();
     }
 
     private void spawn() {

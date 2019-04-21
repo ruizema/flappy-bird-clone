@@ -4,8 +4,6 @@ public abstract class Entity {
     protected int imageNum;
     protected int x, y;
     protected int radius;
-    protected Boolean passed;
-    protected Boolean collision;
 
     /**
      * Getter for the X coordinate
@@ -30,23 +28,9 @@ public abstract class Entity {
     public int getImageNum() { return this.imageNum; }
 
     /**
-     * Getter for if their is a collison with this entity
-     * @return true if entity has collided with an other entity else false
-     */
-    //public Boolean getCollision() { return this.collision; }
-
-    /**
      * Abstract method to update entity in the game
      * @param deltaTime
      */
     public abstract void update(double deltaTime);
 
-    //public abstract void collision();
-
-
-    /**
-     * change the position of entity
-     *
-     */
-    //public abstract void move(double x,double y);
 }

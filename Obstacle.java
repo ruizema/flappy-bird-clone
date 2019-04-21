@@ -2,6 +2,9 @@ package sample;
 
 import java.util.Random;
 
+/**
+ * Class for obstacles in Flappy Ghost.
+ */
 public class Obstacle extends Entity {
 
     private String type;
@@ -13,6 +16,13 @@ public class Obstacle extends Entity {
     private int quantumRange;
     private double quantumTimer;
 
+    /**
+     * Constructor
+     * @param x (Virtual) x-coordinate at the centre of the obstacle.
+     * @param y Y-coordinate at the centre of the obstacle.
+     * @param type The obstacle's type, which defines its behaviour.
+     * @param imageNum The number of the fruit image associated with the obstacle.
+     */
     public Obstacle(int x, int y, String type, int imageNum) {
         this.x = x;
         this.y = y;
@@ -24,8 +34,14 @@ public class Obstacle extends Entity {
         this.amplitude = 50;
         this.period = 2;
         this.quantumRange = 30;
+        this.passed = false;
     }
 
+    /**
+     * The update method is overriden and is used to update the obstacle's position in space, according to the time
+     * passed. Each type of obstacle moves differently.
+     * @param deltaTime The time (in seconds) since the last update of the position of the obstacle.
+     */
     @Override
     public void update(double deltaTime) {
         timer += deltaTime;
@@ -36,12 +52,19 @@ public class Obstacle extends Entity {
                 break;
             case "quantum":
                 if (quantumTimer >= 0.2) {
-                    int quantumMovement = (int) (Math.random() * quantumRange * 2 + 1) - quantumRange;
-                    x += quantumMovement;
-                    y += quantumMovement;
+                    x += (int) (Math.random() * quantumRange * 2 + 1) - quantumRange;
+                    y += (int) (Math.random() * quantumRange * 2 + 1) - quantumRange;
                     quantumTimer = 0;
                 }
                 break;
         }
+    }
+
+    public boolean getPassed() {
+        return passed;
+    }
+
+    public void setPassed() {
+        this.passed = true;
     }
 }

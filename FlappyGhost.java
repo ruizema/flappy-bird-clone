@@ -6,11 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class FlappyGhost extends Application {
 
@@ -38,9 +36,11 @@ public class FlappyGhost extends Application {
         gameRoot.getChildren().add(canvas);
         GraphicsContext context = canvas.getGraphicsContext2D();
 
-        // TODO: Animation timer
-            // Draws two parts of the background seamlessly
-            // From a list of coordinates, draws all of the entities
+        gameScene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SPACE) {
+                controller.jump();
+            }
+        });
 
         AnimationTimer timer = new AnimationTimer() {
             private long lastTime = 0;
@@ -82,8 +82,6 @@ public class FlappyGhost extends Application {
 
         // Menu bar
 
-        // Ending screen
-
         // Stage set up
         primaryStage.setTitle("Flappy Ghost");
         primaryStage.setScene(gameScene); // change to startScene when that's implemented
@@ -96,9 +94,9 @@ public class FlappyGhost extends Application {
     }
 }
 
-// TODO: Ghost jumping
 // TODO: Menu bar (pausing & debug mode)
-// TODO: Implement all the scenes (start, end)
+// TODO: Implement starting screen
+// TODO: Implement restart (pause 3 seconds, then reset everything?)
 // TODO: Bonus obstacles
 // TODO: Bonus secret code
 // TODO: Bonus Android port
