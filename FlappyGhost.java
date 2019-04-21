@@ -9,6 +9,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class FlappyGhost extends Application {
 
     private Stage stage;
@@ -64,10 +67,11 @@ public class FlappyGhost extends Application {
                 int[][] entityCoordinates = controller.getEntityCoordinates();
                 for (int i = 0; i < entityCoordinates.length; i++) {
                     int imageNum = entityCoordinates[i][0];
+                    Image image = new Image("./images/entities/" + imageNum + ".png");
                     int x = (entityCoordinates[i][1] - camera) + STAGE_WIDTH / 2;
                     int y = entityCoordinates[i][2];
                     int r = entityCoordinates[i][3];
-                    context.drawImage(new Image("./images/entities/" + imageNum + ".png"), x - r, y - r);
+                    context.drawImage(image, x - r, y - r, r * 2, r * 2);
                 }
 
                 lastTime = now;
@@ -92,14 +96,9 @@ public class FlappyGhost extends Application {
     }
 }
 
-// TODO: Ghost jumping & physics
-// TODO: End game
-// TODO: Implement MVC!
-// TODO: UI
-// TODO: Debug mode
+// TODO: Ghost jumping
+// TODO: Menu bar (pausing & debug mode)
+// TODO: Implement all the scenes (start, end)
 // TODO: Bonus obstacles
 // TODO: Bonus secret code
 // TODO: Bonus Android port
-
-// TODO: Learn how to transition between scenes
-// TODO: Implement all the scenes

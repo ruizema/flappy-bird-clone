@@ -5,14 +5,14 @@ import java.util.Random;
 
 public class Controller {
 
-    private int x = 0;
     private FlappyGhost view;
     private LinkedList<Entity> entities;
-    private double lastSpawned;
+    private double spawnTimer;
+    private double SPAWN_FREQUENCY = 3;
 
     public Controller(FlappyGhost flappyGhost) {
         this.view = flappyGhost;
-        this.lastSpawned = 0;
+        this.spawnTimer = 0;
         entities = new LinkedList<>();
         entities.add(new Ghost( view.getSTAGE_WIDTH() / 2, 200));
     }
@@ -33,9 +33,9 @@ public class Controller {
     }
 
     public void update(double deltaTime) {
+        spawnTimer += deltaTime;
 
         for (int i = 0; i < entities.size(); i++) {
-
             // Despawning obstacles
             if (i != 0 && entities.get(i).getX() < getGhostX() - 0.75 * view.getSTAGE_WIDTH()) {
                 entities.remove(i);
@@ -47,14 +47,10 @@ public class Controller {
             entities.get(i).update(deltaTime);
 
             // Spawning obstacles
-            double SPAWN_FREQUENCY = 3;
-            double nanoTime = System.nanoTime();
-            double spawnDeltaTime = (nanoTime - lastSpawned) * 1e-9;
-            if (spawnDeltaTime >= SPAWN_FREQUENCY || lastSpawned == 0) {
+            if (spawnTimer >= SPAWN_FREQUENCY) {
                 spawn();
-                lastSpawned = nanoTime;
+                spawnTimer = 0;
             }
-
         }
     }
 
