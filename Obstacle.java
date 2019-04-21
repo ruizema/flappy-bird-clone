@@ -35,6 +35,7 @@ public class Obstacle extends Entity {
         this.period = 2;
         this.quantumRange = 30;
         this.passed = false;
+        this.inCollision = false;
     }
 
     /**

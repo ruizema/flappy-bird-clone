@@ -60,6 +60,8 @@ public class Ghost extends Entity {
 
     public boolean checkCollision(Obstacle obstacle) {
         double distance = Math.pow(x - obstacle.getX(), 2) + Math.pow(y - obstacle.getY(), 2);
-        return distance < Math.pow(radius + obstacle.getRadius(), 2);
+        boolean inCollision = distance < Math.pow(radius + obstacle.getRadius(), 2);
+        obstacle.setInCollision(inCollision);
+        return inCollision;
     }
 }

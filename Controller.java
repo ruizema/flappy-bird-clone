@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.scene.control.Button;
+
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -23,13 +25,19 @@ public class Controller {
         return ghost.getX();
     }
 
+    public int getGhostScore() {
+        return ghost.getScore();
+    }
+
     public int[][] getEntityCoordinates() {
-        int[][] coordinates = new int[entities.size()][4];
+        int[][] coordinates = new int[entities.size()][5];
         for (int i = 0; i < entities.size(); i++) {
-            coordinates[i][0] = entities.get(i).getImageNum();
-            coordinates[i][1] = entities.get(i).getX();
-            coordinates[i][2] = entities.get(i).getY();
-            coordinates[i][3] = entities.get(i).getRadius();
+            Entity entity = entities.get(i);
+            coordinates[i][0] = entity.getImageNum();
+            coordinates[i][1] = entity.getX();
+            coordinates[i][2] = entity.getY();
+            coordinates[i][3] = entity.getRadius();
+            coordinates[i][4] = entity.getInCollision() ? 1 : 0;
         }
         return coordinates;
     }
@@ -53,7 +61,7 @@ public class Controller {
 
             // Checking for interactions
             if (ghost.checkCollision(obstacle)) {
-                System.out.println("collision");
+                System.out.print("");
             }
             ghost.checkPass(obstacle);
         }

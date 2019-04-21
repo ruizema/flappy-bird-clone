@@ -4,6 +4,7 @@ public abstract class Entity {
     protected int imageNum;
     protected int x, y;
     protected int radius;
+    protected boolean inCollision;
 
     /**
      * Getter for the X coordinate
@@ -26,6 +27,14 @@ public abstract class Entity {
      * @return imageNum of entity
      */
     public int getImageNum() { return this.imageNum; }
+
+    public boolean getInCollision() {
+        return inCollision;
+    }
+
+    public void setInCollision(boolean inCollision) {
+        this.inCollision = inCollision;
+    }
 
     /**
      * Abstract method to update entity in the game
