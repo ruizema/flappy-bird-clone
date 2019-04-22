@@ -1,5 +1,6 @@
-package sample;
-
+/**
+ * The Entity class of Flappy Ghost game.
+ */
 public abstract class Entity {
     protected int imageNum;
     protected int x, y;
@@ -11,6 +12,11 @@ public abstract class Entity {
      * @return double value of x position
      */
     public int getX() { return this.x; }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
     /**
      * Getter for the Y coordinate
      * @return double value of y position
@@ -28,10 +34,18 @@ public abstract class Entity {
      */
     public int getImageNum() { return this.imageNum; }
 
+    /**
+     * Getter for the attribute inCollision.
+     * @return boolean inCoollision
+     */
     public boolean getInCollision() {
         return inCollision;
     }
 
+    /**
+     * Setter for the inCollsion attribute.
+     * @param inCollision
+     */
     public void setInCollision(boolean inCollision) {
         this.inCollision = inCollision;
     }

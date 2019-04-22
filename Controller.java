@@ -1,10 +1,9 @@
-package sample;
-
-import javafx.scene.control.Button;
-
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * The Controller of the Flappy Ghost game.
+ */
 public class Controller {
 
     private FlappyGhost view;
@@ -13,6 +12,10 @@ public class Controller {
     private double spawnTimer;
     private double SPAWN_FREQUENCY = 3;
 
+    /**
+     * Constructor of the controller.
+     * @param flappyGhost the actual game
+     */
     public Controller(FlappyGhost flappyGhost) {
         this.view = flappyGhost;
         this.spawnTimer = 0;
@@ -21,14 +24,27 @@ public class Controller {
         entities.add(ghost);
     }
 
+    /**
+     * Getter for the x coordinate of the ghost in the game.
+     * @return int x position of ghost
+     */
     public int getGhostX() {
         return ghost.getX();
     }
 
+    /**
+     * Getter for the score of the ghost ine the game.
+     * @return int value of score
+     */
     public int getGhostScore() {
         return ghost.getScore();
     }
 
+    /**
+     * The getEntityCoordinates method is used to store the information concerning the entities(Ghost,Obstacles)
+     * in the game.
+     * @return 2D array of int values of information on the various entities in game
+     */
     public int[][] getEntityCoordinates() {
         int[][] coordinates = new int[entities.size()][5];
         for (int i = 0; i < entities.size(); i++) {
@@ -42,6 +58,11 @@ public class Controller {
         return coordinates;
     }
 
+    /**
+     * The update method is overrided , it is used to keep track of what is going on in the game.This method makes sure
+     * to update all the entities during the game.
+     * @param deltaTime the time passed since the last update
+     */
     public void update(double deltaTime) {
         spawnTimer += deltaTime;
         ghost.update(deltaTime);
@@ -50,7 +71,9 @@ public class Controller {
             Obstacle obstacle = (Obstacle) entities.get(i);
 
             // Despawning obstacles
-            if (obstacle.getX() < getGhostX() - 0.75 * view.getSTAGE_WIDTH()) {
+            double leftBound = getGhostX() - 0.75 * view.getSTAGE_WIDTH();
+            double rightBound = getGhostX() + 0.75 * view.getSTAGE_WIDTH();
+            if (obstacle.getX() < leftBound || obstacle.getX() > rightBound) {
                 entities.remove(i);
                 i--;
                 continue;
@@ -73,10 +96,17 @@ public class Controller {
         }
     }
 
+    /**
+     * This method is used to make the ghost jump when the user presses the spaceBar.
+     */
     public void jump() {
         ghost.jump();
     }
 
+    /**
+     * The spawn method is used to generate (used in the Obstacle class)randomly every three seconds a new
+     * obstacles and choosing randomly a picture from the 27 pictures of fruits.
+     */
     private void spawn() {
         Random rand = new Random();
         int x = getGhostX() + view.getSTAGE_WIDTH() / 2 + 45;
@@ -84,5 +114,10 @@ public class Controller {
         String type = new String[]{"simple", "sin", "quantum"}[rand.nextInt(3)];
         int imageNum = rand.nextInt(27);
         entities.add(new Obstacle(x, y, type, imageNum));
+    }
+
+    public void reset() {
+        ghost = new Ghost(0, 0);
+        entities.set(0, ghost);
     }
 }

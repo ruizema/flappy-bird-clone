@@ -1,5 +1,3 @@
-package sample;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,6 +18,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * The Flappy Ghost class .
+ */
 public class FlappyGhost extends Application {
 
     private Stage stage;
@@ -28,18 +29,28 @@ public class FlappyGhost extends Application {
     private boolean debugMode = false;
 
     private int STAGE_WIDTH = 640;
+    private int NB_OBSTACLES = 27;
 
+    /**
+     * Getter for the width of the stage of the game.
+     * @return int value of width
+     */
     public int getSTAGE_WIDTH() {
         return STAGE_WIDTH;
     }
 
+    /**
+     * Start  method used to create the graphic interface of the game Flappy Ghost. The interface contains a realtime
+     * moving background with random fruit images , a moving ghost and a menu section on the bottom of the stage to
+     * pause/resume , debug and see the score of the ghost.
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.stage = primaryStage;
         this.controller = new Controller(this);
         primaryStage.setResizable(false);
-
-        // Starting screen
 
         // Main game
         VBox gameRoot = new VBox();
@@ -60,15 +71,35 @@ public class FlappyGhost extends Application {
 
         Text score = new Text();
 
+        // Loading images into memory
+        Image[] images = new Image[NB_OBSTACLES + 1];
+        for (int i = -1; i < NB_OBSTACLES; i++) {
+            images[i + 1] = new Image("./images/entities/" + i + ".png");
+        }
+
+        Image bg1 = new Image("./images/bg.png");
+        Image bg2 = new Image("./images/bg.png");
+
         AnimationTimer timer = new AnimationTimer() {
             private long lastTime = 0;
 
+
+            /**
+             * The start method is overrided in the animation Timer class. This is used to call the handle method in
+             * each frame of the timer created by AnimationTimer.
+             */
             @Override
             public void start() {
                 lastTime = System.nanoTime();
                 super.start();
             }
 
+            /**
+             * The handle method is overrided and called every frame of the timer while AnimaionTimer is active is active.
+             * This method allows the enities and the game layout to move (background , obstacles,ghost).
+             * @param now The timestamp of the current frame given in nanoseconds(long), it will be the same
+             *           for all AnimationTimers called during one frame.
+             */
             @Override
             public void handle(long now) {
                 double deltaTime = (now - lastTime) * 1e-9;
@@ -78,8 +109,8 @@ public class FlappyGhost extends Application {
 
                 // Scrolling background
                 int backgroundOffset = camera % STAGE_WIDTH;
-                context.drawImage(new Image("./images/bg.png"), 0 - backgroundOffset, 0);
-                context.drawImage(new Image("./images/bg.png"), STAGE_WIDTH - backgroundOffset, 0);
+                context.drawImage(bg1, 0 - backgroundOffset, 0);
+                context.drawImage(bg2, STAGE_WIDTH - backgroundOffset, 0);
 
                 // Drawing entities
                 int[][] entityCoordinates = controller.getEntityCoordinates();
@@ -99,9 +130,12 @@ public class FlappyGhost extends Application {
                         }
                         context.fillOval(x - r, y - r, r * 2, r * 2);
                     } else {
+                        if (inCollision) {
+                            controller.reset();
+                            break;
+                        }
                         int imageNum = entityCoordinates[i][0];
-                        Image image = new Image("./images/entities/" + imageNum + ".png");
-                        context.drawImage(image, x - r, y - r, r * 2, r * 2);
+                        context.drawImage(images[imageNum + 1], x - r, y - r, r * 2, r * 2);
                     }
                 }
 
@@ -155,14 +189,16 @@ public class FlappyGhost extends Application {
         primaryStage.show();
     }
 
-
+    /**
+     * The main method of the game Flappy Ghost.
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 }
 
-// TODO: Implement starting screen
-// TODO: Implement restart (pause 3 seconds, then reset everything?)
 // TODO: Bonus obstacles
 // TODO: Bonus secret code
+// TODO: Break up into functions?
 // TODO: Bonus Android port

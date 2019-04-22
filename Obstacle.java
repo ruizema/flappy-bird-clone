@@ -1,5 +1,3 @@
-package sample;
-
 import java.util.Random;
 
 /**
@@ -39,7 +37,7 @@ public class Obstacle extends Entity {
     }
 
     /**
-     * The update method is overriden and is used to update the obstacle's position in space, according to the time
+     * The update method is overrided and is used to update the obstacle's position in space, according to the time
      * passed. Each type of obstacle moves differently.
      * @param deltaTime The time (in seconds) since the last update of the position of the obstacle.
      */
@@ -61,10 +59,17 @@ public class Obstacle extends Entity {
         }
     }
 
+    /**
+     * The getPassed method is a getter for the passed attribute of the obstacle.
+     * @return boolean passed
+     */
     public boolean getPassed() {
         return passed;
     }
 
+    /**
+     * The setPassed method is a setter for the passed attribute of the obstacle.
+     */
     public void setPassed() {
         this.passed = true;
     }
