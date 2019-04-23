@@ -72,8 +72,7 @@ public class Controller {
 
             // Despawning obstacles
             double leftBound = getGhostX() - 0.75 * view.getSTAGE_WIDTH();
-            double rightBound = getGhostX() + 0.75 * view.getSTAGE_WIDTH();
-            if (obstacle.getX() < leftBound || obstacle.getX() > rightBound) {
+            if (obstacle.getX() < leftBound) {
                 entities.remove(i);
                 i--;
                 continue;
@@ -116,8 +115,16 @@ public class Controller {
         entities.add(new Obstacle(x, y, type, imageNum));
     }
 
+    /**
+     * This method is called to reset the game by generating a new instance of ghost at the starting point, as well as
+     * despawning all other entities.
+     */
     public void reset() {
-        ghost = new Ghost(0, 0);
+        ghost = new Ghost( view.getSTAGE_WIDTH() / 2, 200);
         entities.set(0, ghost);
+        for (int i = 1; i < entities.size(); i++) {
+            entities.remove(i);
+            i--;
+        }
     }
 }

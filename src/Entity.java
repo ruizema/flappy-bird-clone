@@ -13,6 +13,10 @@ public abstract class Entity {
      */
     public int getX() { return this.x; }
 
+    /**
+     * Setter for the x-coordinate.
+     * @param x The x value to be set.
+     */
     public void setX(int x) {
         this.x = x;
     }
@@ -22,14 +26,15 @@ public abstract class Entity {
      * @return double value of y position
      */
     public int getY() { return this.y; }
+
     /**
-     * Getter for the rayon attribute
+     * Getter for the radius of the entity.
      * @return double value of rayon
      */
     public int getRadius() { return this.radius; }
 
     /**
-     * Getter for the imageNum corresponding to the entity in question
+     * Getter for the image number corresponding to the entity in question
      * @return imageNum of entity
      */
     public int getImageNum() { return this.imageNum; }
@@ -44,7 +49,7 @@ public abstract class Entity {
 
     /**
      * Setter for the inCollsion attribute.
-     * @param inCollision
+     * @param inCollision Whether the entity is in collision with the ghost.
      */
     public void setInCollision(boolean inCollision) {
         this.inCollision = inCollision;
@@ -52,7 +57,7 @@ public abstract class Entity {
 
     /**
      * Abstract method to update entity in the game
-     * @param deltaTime
+     * @param deltaTime The time passed, in seconds.
      */
     public abstract void update(double deltaTime);
 

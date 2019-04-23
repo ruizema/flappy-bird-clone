@@ -94,7 +94,7 @@ public class Ghost extends Entity {
      *  It will compare the the distance in between the two centers of the balls(balls=ghost & obstacles) versus their
      *  radius combined.
      * @param obstacle in potential collision with the ghost.
-     * @return true if theirs a collision else false no collision
+     * @return true if there's a collision else false no collision
      */
     public boolean checkCollision(Obstacle obstacle) {
         double distance = Math.pow(x - obstacle.getX(), 2) + Math.pow(y - obstacle.getY(), 2);

@@ -1,3 +1,6 @@
+/**
+ * @author Rui Ze Ma et Valerie Triassi
+ */
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -40,7 +43,7 @@ public class FlappyGhost extends Application {
     }
 
     /**
-     * Start  method used to create the graphic interface of the game Flappy Ghost. The interface contains a realtime
+     * Start method used to create the graphic interface of the game Flappy Ghost. The interface contains a realtime
      * moving background with random fruit images , a moving ghost and a menu section on the bottom of the stage to
      * pause/resume , debug and see the score of the ghost.
      * @param primaryStage
@@ -83,7 +86,6 @@ public class FlappyGhost extends Application {
         AnimationTimer timer = new AnimationTimer() {
             private long lastTime = 0;
 
-
             /**
              * The start method is overrided in the animation Timer class. This is used to call the handle method in
              * each frame of the timer created by AnimationTimer.
@@ -113,6 +115,23 @@ public class FlappyGhost extends Application {
                 context.drawImage(bg2, STAGE_WIDTH - backgroundOffset, 0);
 
                 // Drawing entities
+                drawEntities(camera);
+
+                score.setText("Score : " + controller.getGhostScore());
+
+                lastTime = now;
+
+                Platform.runLater(() -> {
+                    canvas.requestFocus();
+                });
+            }
+
+            /**
+             * Draws up a list of entities based on data called from the controller, in relation to the x-position of
+             * the ghost.
+             * @param camera The x-position of the ghost, designated as the centre of the screen (camera).
+             */
+            public void drawEntities(int camera) {
                 int[][] entityCoordinates = controller.getEntityCoordinates();
 
                 for (int i = 0; i < entityCoordinates.length; i++) {
@@ -138,14 +157,6 @@ public class FlappyGhost extends Application {
                         context.drawImage(images[imageNum + 1], x - r, y - r, r * 2, r * 2);
                     }
                 }
-
-                lastTime = now;
-
-                score.setText("Score : " + controller.getGhostScore());
-
-                Platform.runLater(() -> {
-                    canvas.requestFocus();
-                });
             }
         };
 
@@ -191,14 +202,10 @@ public class FlappyGhost extends Application {
 
     /**
      * The main method of the game Flappy Ghost.
-     * @param args
+     * @param args Command-line arguments.
      */
     public static void main(String[] args) {
         launch(args);
     }
 }
 
-// TODO: Bonus obstacles
-// TODO: Bonus secret code
-// TODO: Break up into functions?
-// TODO: Bonus Android port
